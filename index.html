@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Checkboxes</title>
+  </head>
+  <body>
+    <style>
+      html,
+      body {
+        height: 100vh;
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: #ee5522;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='100' y1='33' x2='100' y2='-3'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='1'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='100' y1='135' x2='100' y2='97'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='%23ca481d' fill-opacity='0.6'%3E%3Crect x='100' width='100' height='100'/%3E%3Crect y='100' width='100' height='100'/%3E%3C/g%3E%3Cg fill-opacity='0.5'%3E%3Cpolygon fill='url(%23a)' points='100 30 0 0 200 0'/%3E%3Cpolygon fill='url(%23b)' points='100 100 0 130 0 100 200 100 200 130'/%3E%3C/g%3E%3C/svg%3E");
+      }
+
+      .checkboxes {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-inline: auto;
+        margin-block-start: 200px;
+        width: 400px;
+        max-width: 90vw;
+        background-color: #fefefe;
+        box-shadow: 10px 10px 1px 1px rgba(0,0,0,.2);
+      }
+
+      .checkbox-container {
+        display: flex;
+        position: relative;
+        flex-direction: row-reverse;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 20px;
+        gap: 20px;
+        border-block-end: 1px solid #e6e6e6;
+      }
+
+      .checkbox-container > label {
+        font-family: sans-serif;
+        padding-left: 20px;
+      }
+
+      .checkbox-container > label.checked {
+        text-decoration: line-through;
+      }
+
+      .checkbox-container > label:before {
+        content: '';
+        position: absolute;
+        height: 100%;
+        top: 0;
+        left: 64px;
+        width: 1px;
+        background-color: #e6e6e6;
+      }
+    </style>
+
+    <div class="checkboxes">
+      <div class="checkbox-container">
+        <label for="">This is an inbox layout</label>
+        <input type="checkbox" name="checkboxes" id="checkbox-1" />
+      </div>
+      <div class="checkbox-container">
+        <label for="">Check one item</label>
+        <input type="checkbox" name="checkboxes" id="checkbox-2" />
+      </div>
+      <div class="checkbox-container">
+        <label for="">Hold down your shift key</label>
+        <input type="checkbox" name="checkboxes" id="checkbox-3" />
+      </div>
+      <div class="checkbox-container">
+        <label for="">Check a lower item</label>
+        <input type="checkbox" name="checkboxes" id="checkbox-4" />
+      </div>
+      <div class="checkbox-container">
+        <label for="">Everything inbetween should also be set to checked</label>
+        <input type="checkbox" name="checkboxes" id="checkbox-5" />
+      </div>
+      <div class="checkbox-container">
+        <label for="">Try do it without any libraries</label>
+        <input type="checkbox" name="checkboxes" id="checkbox-6" />
+      </div>
+      <div class="checkbox-container">
+        <label for="">Just regular JavaScript</label>
+        <input type="checkbox" name="checkboxes" id="checkbox-7" />
+      </div>
+      <div class="checkbox-container">
+        <label for="">Good luck!</label>
+        <input type="checkbox" name="checkboxes" id="checkbox-8" />
+      </div>
+      <div class="checkbox-container">
+        <label for="">Tweet your result</label>
+        <input type="checkbox" name="checkboxes" id="checkbox-9" />
+      </div>
+    </div>
+
+    <script>
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]')
+      const labels = document.querySelectorAll('label')
+
+      let isHoldingShift = false
+      let previousChecked
+
+      document.addEventListener('keydown', e => {
+        if (e.keyCode === 16) {
+          isHoldingShift = true
+        }
+      })
+
+      document.addEventListener('keyup', e => {
+        if (e.keyCode === 16) {
+          isHoldingShift = false
+        }
+      })
+
+      function checkAll(from, to) {
+        if (from < to) {
+          for (let i = from; i <= to; i++) {
+            checkboxes[i].checked = true
+            labels[i].classList.add('checked')
+          }
+        } else {
+          for (let i = from; i >= to; i--) {
+            checkboxes[i].checked = true
+            labels[i].classList.add('checked')
+          }
+        }
+      }
+
+      function uncheckAll(from, to) {
+        if (from < to) {
+          for (let i = from; i <= to; i++) {
+            checkboxes[i].checked = false
+            labels[i].classList.remove('checked')
+          }
+        } else {
+          for (let i = from; i >= to; i--) {
+            checkboxes[i].checked = false
+            labels[i].classList.remove('checked')
+          }
+        }
+      }
+
+      checkboxes.forEach((checkbox, i) => {
+        checkbox.addEventListener('change', event => {
+          if (isHoldingShift && (!!previousChecked || previousChecked === 0)) {
+            if (event.target.checked) {
+              checkAll(previousChecked, i)
+            } else {
+              uncheckAll(previousChecked, i)
+            }
+          }
+
+          if (!isHoldingShift) {
+            labels[i].classList.toggle('checked')
+          }
+          previousChecked = i
+        })
+      })
+    </script>
+  </body>
+</html>
